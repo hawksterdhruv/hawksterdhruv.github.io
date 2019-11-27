@@ -15,6 +15,7 @@
       resize: none;
       border-radius: 5px;
       padding: 5px;
+      font-size: 1.4em;
       /*font-family: ;*/
     }
 
@@ -32,7 +33,7 @@
       "other1 other1 other2 other2 other2"
       "sms    sms    regex  regex  options"
       "sms    sms    regex  regex  options"
-      "footer footer footer footer footer";
+      "footer footer footer footer options";
       
       min-height: 100%;
     }
@@ -45,6 +46,7 @@
     }
     #regex {
       grid-area: regex;
+      font-size: 1.4em;
       /*grid-column: 3/5;*/
       /*grid-row:2/4;*/
       /*resize: none;*/
@@ -60,17 +62,20 @@
     }
     #type span{
       vertical-align:middle;
-      font-size: 20px;
+      font-size: 2em;
     }
-
+    #footer {
+      grid-area: footer;
+      background-color:  MediumAquaMarine;
+      box-shadow: -2px -2px 3px -1px;
+    }
   </style>
   
 </head>
 <body>
 <div class="grid-container">
+
   <textarea name="" id="sms" ></textarea>
-  
-  
   
   <textarea name="" id="regex"></textarea>
   
@@ -86,15 +91,17 @@
   </div>
 
   <div id="options">
-    <span class="pill prefix">acc</span>
-    <span class="pill prefix">tx_amt</span>
-    <span class="pill prefix">bal_amt</span>
-    <span class="pill prefix">dt</span>
-    <span class="pill prefix">tx_cur</span>
-    <span class="pill prefix">bal_cur</span>
-    <span class="pill prefix">narration</span>
+    <span class="pill prefix">acc</span><br>
+    <span class="pill prefix">tx_amt</span><br>
+    <span class="pill prefix">bal_amt</span><br>
+    <span class="pill prefix">dt</span><br>
+    <span class="pill prefix">tx_cur</span><br>
+    <span class="pill prefix">bal_cur</span><br>
+    <span class="pill prefix">narration</span><br>
     <!-- <span class="pill prefix">type</span> -->
-
+  </div>
+  <div id="footer">
+    
   </div>
 </div>
 </body>
@@ -117,7 +124,30 @@
     })
 
     $('#regex').keyup(function(){
-      console.log('changing');
+      
+      var string = $('#sms').val();
+      try {
+        var re =  new RegExp($('#regex').val());
+        // var valid = re.test(string);
+        if((m = re.exec(string)) !== null){
+          $('#footer').css('background-color','MediumAquaMarine');
+          $('#footer').html('');
+                   
+          // The result can be accessed through the `m`-variable.
+          m.forEach((match, groupIndex) => {
+            $('#footer').append(`group ${groupIndex}: ${match}<br>`);
+          });
+        
+        }else{
+          $('#footer').css('background-color','#ff8a3c');
+          $('#footer').html('No Match');
+        }
+
+      }catch(err){
+        $('#footer').css('background-color','#ff8a3c');
+        $('#footer').html('!! Invalid Regex');
+      }
+      // #ff8a3c
     });
     
     $('.prefix').click(function(){
