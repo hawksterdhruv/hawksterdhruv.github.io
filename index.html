@@ -4,57 +4,78 @@
    <meta charset="UTF-8"> 
   <title></title>
   <!-- <script src="codemirror/lib/codemirror.js"></script> -->
-  <link rel="stylesheet" href="resources/main.css">
+  <!-- <link rel="stylesheet" href="resources/main.css"> -->
   <script src="resources/jquery.min.js"></script>
   <script src="resources/rangyinputs-jquery-src.js"></script>
-
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/css/bootstrap4-toggle.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/bootstrap4-toggle@3.6.1/js/bootstrap4-toggle.min.js"></script>
+  
   <style>
     
 
     textarea {
       resize: none;
-      border-radius: 5px;
-      padding: 5px;
+      
+      /*padding: 5px;*/
       font-size: 1.4em;
-      /*font-family: ;*/
-    }
+      font-family: monospace;
 
+    }
+    
+    /*.pill {
+      background-color: #eee;
+      border: 1px solid #ccc;
+
+    }*/
 
 
 
     .grid-container {
       display: grid;
-      grid-gap: 20px;
-      grid-template-columns: repeat(5,1fr) ;
+      grid-gap: 15px;
+      grid-template-columns: repeat(4,1fr) 2fr;
      
-      grid-template-rows: repeat(5,1fr);
+      grid-template-rows: 1fr 10% repeat(3,1fr) 10%;
       grid-template-areas:
       "header header header header header"
       "other1 other1 other2 other2 other2"
-      "sms    sms    regex  regex  options"
-      "sms    sms    regex  regex  options"
+      "sms    sms    sms    sms  options"
+      "regex  regex  regex  regex  options"
       "footer footer footer footer options";
       
       min-height: 100%;
     }
   
-    #sms {
+    #sms-container {
       /*grid-column: 1/3;*/
       /*grid-row: 2/4;*/
       grid-area: sms;
+      margin-bottom: 0px !important;
       
     }
-    #regex {
+    #regex-container {
       grid-area: regex;
       font-size: 1.4em;
+      margin-bottom: 0px !important;
       /*grid-column: 3/5;*/
       /*grid-row:2/4;*/
       /*resize: none;*/
     }
     #options {
+      display:grid;
       grid-area: options;
+      /*grid-template-columns: repeat(2, 1fr);*/
+      /*grid-row-gap:2px;*/
+      grid-row-gap: 5px;
       /*grid-column: 5/6;*/
       /*grid-row:2/4;*/
+    }
+    #options div{
+      margin-bottom: 0px !important;
     }
     #type {
       grid-area: other2;
@@ -67,56 +88,124 @@
     #footer {
       grid-area: footer;
       background-color:  MediumAquaMarine;
-      box-shadow: -2px -2px 3px -1px;
+      /*box-shadow: -2px -2px 3px -1px;*/
+    }
+    .font-weight-normal {
+      font-size: 2em;
+    }
+      
+    #btn_templates {
+      grid-row:6;
+      grid-column: 4;
+    }
+    #btn_entities {
+      grid-row:6;
+      grid-column: 5;
     }
   </style>
   
 </head>
 <body>
-<div class="grid-container">
 
-  <textarea name="" id="sms" ></textarea>
+<div class="container-fluid grid-container">
   
-  <textarea name="" id="regex"></textarea>
-  
-  <div id="type">
-    <span>Debit</span>
-    <label class="switch">
-      
-      <input type="checkbox">
-      <span class="slider round"></span>
-      
-    </label>
-    <span>Credit</span>
+  <div class="input-group mb-3" id="sms-container">
+    <textarea class="form-control" name="" id="sms" ></textarea>
   </div>
+  <div class="input-group mb-3" id="regex-container">
+    <div class="input-group-prepend">
+      <span class="input-group-text">/</span>
+    </div>
+    <textarea class="form-control" name="" id="regex"></textarea>
+    <div class="input-group-append">
+      <span class="input-group-text">/</span>
+    </div>
+  </div>
+  
+ <!--  <div id="type">
+    
+  </div> -->
 
   <div id="options">
-    <span class="pill prefix">acc</span><br>
-    <span class="pill prefix">tx_amt</span><br>
-    <span class="pill prefix">bal_amt</span><br>
-    <span class="pill prefix">dt</span><br>
-    <span class="pill prefix">tx_cur</span><br>
-    <span class="pill prefix">bal_cur</span><br>
-    <span class="pill prefix">narration</span><br>
-    <!-- <span class="pill prefix">type</span> -->
+    <div>
+      <input type="checkbox" checked data-toggle="toggle" data-on="Credit" data-off="Debit" data-onstyle="success" data-offstyle="danger">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Account Number</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="acc">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Tx Currency</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="tx_cur">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Tx Amount</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="tx_amt">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Bal Currency</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="bal_cur">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Bal Amount</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="bal_amt">
+    </div>
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Date</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="dt">
+    </div>
+    
+    
+    <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <button class="btn btn-outline-primary prefix" type="button">Narration</button>
+      </div>
+      <input type="text" class="form-control" placeholder="Some text" id="narration">
+    </div>
   </div>
-  <div id="footer">
+
+  <div id="footer" class="card shadow">
     
   </div>
+   <button id='btn_templates' type="button" class="btn btn-outline-success">Save Template</button>
+   <button id='btn_entities' type="button" class="btn btn-outline-success">Update Entities</button>
+
 </div>
 </body>
 <script>
   $(document).ready(function() {
+    var regex = {}
+    $.get('https://firestore.googleapis.com/v1/projects/sms-analyzer/databases/(default)/documents/config/entities',
+      function(data){
+        for (i in data.fields){
+          regex[i] = data.fields[i].mapValue.fields;
+          $('#'+i).val(regex[i].input.stringValue+regex[i].value.stringValue.slice(1,));
+        }
+        // console.log(regex);
+      });
+
     var named_groups = [];
-    var regex = {
-      'acc':{input:'(?<account>',value:'(\d+)'},
-      'tx_amt':{input:'(?<tx_amount>',value:'([\d,]+\.?\d*)'},
-      'bal_amt':{input:'(?<bal_amt>',value:'([\d,]+\.?\d*)'},
-      'dt':{input:'(?<date>',value:'(.+)'},
-      'tx_cur':{input:'(?<tx_currency>',value:'(Rs\.|[a-zA-Z]+)'},
-      'bal_cur':{input:'(?<bal_currency>',value:'(Rs\.|[a-zA-Z]+)'},
-      'narration':{input:'(?<narration>',value:'(.+)'},
-    }
+    // var regex = {
+    //   'acc':{input:'(?<account>',value:'(\d+)'},
+    //   'tx_amt':{input:'(?<tx_amount>',value:'([\d,]+\.?\d*)'},
+    //   'bal_amt':{input:'(?<bal_amt>',value:'([\d,]+\.?\d*)'},
+    //   'dt':{input:'(?<date>',value:'(.+)'},
+    //   'tx_cur':{input:'(?<tx_currency>',value:'(Rs\.|[a-zA-Z]+)'},
+    //   'bal_cur':{input:'(?<bal_currency>',value:'(Rs\.|[a-zA-Z]+)'},
+    //   'narration':{input:'(?<narration>',value:'(.+)'},
+    // }
     
 
     $('#sms').change(function(){
@@ -163,8 +252,9 @@
     });
     
     $('.prefix').click(function(){
-      console.log(regex[$(this).text()].input.slice(1,));
-      var pattern = regex[$(this).text()].input+regex[$(this).text()].value.slice(1,);
+      var j = $($(this).parent()[0]).next()[0].id;
+      console.log(regex[j]);
+      var pattern = regex[j].input.stringValue+regex[j].value.stringValue.slice(1,);
       $('#regex').replaceSelectedText(pattern, "collapseToEnd");
       // $('#regex').val($('#regex').val()+regex[$(this).text()].input+regex[$(this).text()].value.slice(1,));
       $('#regex').focus();
